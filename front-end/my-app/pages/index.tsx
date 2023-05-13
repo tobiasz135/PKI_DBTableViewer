@@ -15,7 +15,7 @@ export default function Home() {
   const login  = async () => {
     console.log("login")
     console.log(getCookies())
-    fetch("http://localhost:3000/api/test", {
+    fetch("/api/test", {
       method: "POST",
       headers: {'Content-Type': 'application/json','Accept': 'application/json'},
       body: JSON.stringify({
