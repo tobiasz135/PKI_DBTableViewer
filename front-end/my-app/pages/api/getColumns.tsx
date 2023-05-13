@@ -18,18 +18,20 @@ export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse
   ) {
-    let query = req.body.query;
+    let tableName = req.body.table;
+    let databaseName = req.body.database;
+    let query = `SHOW COLUMNS FROM ${databaseName}.${tableName}`;
+
     console.log(query);
     let results
     try{
         results = await db.query(query);
     } catch (error) {
         await db.end();
-        console.log(error)
-        return res.json({error});
+        return res.json(error);
     }
     await db.end();
-    console.log(results);
-    console.log(req.body)
+    //console.log(results);
+    //console.log(req.body)
     return res.json({results})  
   }

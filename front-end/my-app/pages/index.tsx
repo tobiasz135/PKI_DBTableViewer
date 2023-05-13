@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from '../Styles/page.module.css'
+import styles from '../styles/page.module.css'
 import { Button } from '@nextui-org/react';
 import { Input, Spacer} from "@nextui-org/react";
 import { deleteCookie, getCookie, getCookies, setCookie } from 'cookies-next';
