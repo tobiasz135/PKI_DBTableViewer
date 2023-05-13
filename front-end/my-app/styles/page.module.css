@@ -1,0 +1,15 @@
+.main {
+  margin: 200px 200px;
+  padding: 100px;
+  border: 1px solid #212529;
+  border-radius: 10px;
+  background-color: #212529;
+  box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
