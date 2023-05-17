@@ -27,10 +27,10 @@ export default async function handler (
         results = await db.query(query);
     } catch (error) {
         await db.end();
-        return res.status(501).json(error);
+        return res.json(error);
     }
     await db.end();
-    console.log(results);
-    console.log(req.body)
-    return res.status(401).json({results})  
+    //console.log(results);
+    //console.log(req.body)
+    return res.json({results})  
   }

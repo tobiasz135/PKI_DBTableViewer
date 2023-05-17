@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from '../Styles/page.module.css'
+import styles from '../styles/page.module.css'
 import { Button } from '@nextui-org/react';
 import { Input, Spacer} from "@nextui-org/react";
 import { deleteCookie, getCookie, getCookies, setCookie } from 'cookies-next';
@@ -15,7 +15,7 @@ export default function Home() {
   const login  = async () => {
     console.log("login")
     console.log(getCookies())
-    fetch("http://localhost:3000/api/test", {
+    fetch("/api/test", {
       method: "POST",
       headers: {'Content-Type': 'application/json','Accept': 'application/json'},
       body: JSON.stringify({

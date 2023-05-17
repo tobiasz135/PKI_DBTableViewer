@@ -42,6 +42,11 @@ export default function Home(props: any) {
   const [refreshHidden, setRefreshHidden] = useState(true);
   const [query, setQuery] = useState("");
 
+  const [showErrorDiv, setShowErrorDiv] = useState(false);
+  const [showSuccessDiv, setShowSuccessDiv] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
   const doQuery = () => {
     setRefreshHidden(true);
     setIsLoading(true);
@@ -61,14 +66,22 @@ export default function Home(props: any) {
         if(!data.results || data.results.length == 0) {
           setColumns(["Table is empty"]);
           setData([[]]);
+          if(data?.error){
+            setShowErrorDiv(true);
+            setError(data.error.sqlMessage);
+          }
           return;
         }
-
-        let cols = Object.keys(data?.results[0]);
-        if(cols.length > 0) {
-          setIsLoading(false);
-          setColumns(cols);
-          setData(data.results);
+        try{
+          let cols = Object.keys(data?.results[0]);
+          if(cols.length > 0) {
+            setIsLoading(false);
+            setColumns(cols);
+            setData(data.results);
+          }
+        } catch (error) {
+          setShowSuccessDiv(true);
+          setSuccess(data?.results?.message);
         }
 
       }).then(() => {
@@ -105,9 +118,17 @@ export default function Home(props: any) {
       </Layout>
       <Grid.Container gap={2} justify="center">
         <Grid xs={12} md={10}>
+              {showErrorDiv ?<Card css={{ maxH: "600px" }} color='error'>
+                 <Button size='lg' color='error' bordered onPress={() => setShowErrorDiv(false)}>{error}</Button> 
+              </Card>: ""}
+              {showSuccessDiv ?<Card css={{ maxH: "600px" }} color='success'>
+                  <Button size='lg' color='success' bordered onPress={() => setShowSuccessDiv(false)}>{success}</Button>
+              </Card>: ""}
+        </Grid>
+        <Grid xs={12} md={10}>
             <Card css={{ maxH: "600px" }}>
                 <Card.Body>
-                    <Input width="100%" placeholder="SQL query" onChange={(e) => setQuery(e.target.value)} />
+                    <Input width="100%" placeholder="SQL query" onChange={(e) => {setQuery(e.target.value); setShowErrorDiv(false)}} />
                     <Spacer y={1} />
                     <Button auto flat as={Link} onPress={doQuery} hidden={refreshHidden}>Execute query</Button>
                 </Card.Body>

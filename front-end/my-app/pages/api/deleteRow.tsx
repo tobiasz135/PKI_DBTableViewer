@@ -18,15 +18,31 @@ export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse
   ) {
-    let query = req.body.query;
+    let tableName = req.body.table;
+    let databaseName = req.body.database;
+    let rowToDelete = req.body.row;
+    let keys = Object.keys(rowToDelete);
+    let query = `DELETE FROM ${databaseName}.${tableName} WHERE `;
+    for (let i = 0; i < keys.length; i++) {
+        if(keys[i].includes("date")) {
+            continue;
+        }
+        if (i === keys.length - 1) {
+            query += rowToDelete[keys[i]] ? `${keys[i]} = '${rowToDelete[keys[i]]}'` : ``;
+        } else {
+            query += rowToDelete[keys[i]] ? `${keys[i]} = '${rowToDelete[keys[i]]}' AND ` : ``;
+        }
+    }
+    if(query.endsWith("AND ")) {
+        query = query.slice(0, query.length - 4);
+    }
     console.log(query);
     let results
     try{
         results = await db.query(query);
     } catch (error) {
         await db.end();
-        console.log(error)
-        return res.json({error});
+        return res.json(error);
     }
     await db.end();
     console.log(results);
